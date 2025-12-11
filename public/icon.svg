@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="MyDay logo">
+  <rect width="200" height="200" fill="black" rx="32" />
+  <path d="M54 102l26 26 66-66" fill="none" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="58" cy="70" r="10" fill="white" />
+</svg>
