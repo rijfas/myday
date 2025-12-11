@@ -1,21 +1,21 @@
 "use client";
 
 import {
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  RefreshCw
+    ChevronLeft,
+    ChevronRight,
+    Plus,
+    RefreshCw
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { TaskChart } from "@/components/task-chart";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -70,7 +70,15 @@ export default function Home() {
   const [showAdd, setShowAdd] = useState(false);
   const [weekOffset, setWeekOffset] = useState(0); // 0 = this week ending today
   const [pendingDelete, setPendingDelete] = useState<Task | null>(null);
+  const [installPrompt, setInstallPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  type BeforeInstallPromptEvent = Event & {
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+  };
 
   useEffect(() => {
     const stored = safeParseTasks(
@@ -187,6 +195,26 @@ export default function Home() {
     }
   }, [dayRow, selectedDay]);
 
+  useEffect(() => {
+    const handler = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event as BeforeInstallPromptEvent);
+      setShowInstallBanner(true);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    await installPrompt.prompt();
+    const choice = await installPrompt.userChoice;
+    setShowInstallBanner(false);
+    if (choice.outcome !== "accepted") {
+      setInstallPrompt(null);
+    }
+  };
+
   const handleHoldStart = (task: Task) => {
     if (holdTimer.current) clearTimeout(holdTimer.current);
     holdTimer.current = setTimeout(() => setPendingDelete(task), 550);
@@ -199,6 +227,28 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
       <main className="relative mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 pb-20 pt-6 sm:px-5">
+        {showInstallBanner && (
+          <div className="sticky top-2 z-10 flex items-center justify-between rounded-xl border border-border/70 bg-card px-3 py-3 shadow-lg backdrop-blur">
+            <div className="flex flex-col">
+              <span className="text-sm font-medium">Install MyDay</span>
+              <span className="text-xs text-muted-foreground">
+                Add to your home screen for offline access.
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowInstallBanner(false)}
+              >
+                Later
+              </Button>
+              <Button size="sm" onClick={handleInstall}>
+                Install
+              </Button>
+            </div>
+          </div>
+        )}
         <header className="flex flex-col gap-4">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -284,6 +334,7 @@ export default function Home() {
                           onPointerUp={handleHoldEnd}
                           onPointerLeave={handleHoldEnd}
                           onPointerCancel={handleHoldEnd}
+                          onClick={() => handleToggle(task.id, selectedDay)}
                         >
                           <div className="flex items-start gap-3 sm:items-center">
                             <Checkbox
