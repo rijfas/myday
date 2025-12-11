@@ -354,8 +354,8 @@ export default function Home() {
         </button>
 
         {showAdd && (
-          <div className="fixed inset-0 z-30 flex items-end justify-center bg-black/70 px-4 pb-10 sm:items-center">
-            <div className="w-full max-w-md rounded-2xl border border-border/70 bg-card p-4 shadow-xl">
+          <div className="fixed inset-0 z-30 flex items-end justify-center bg-black/70 px-4 pb-[calc(env(safe-area-inset-bottom,0px)+140px)] sm:items-center sm:pb-10">
+            <div className="w-full max-w-md max-h-[80vh] overflow-auto rounded-2xl border border-border/70 bg-card p-4 shadow-xl">
               <div className="flex items-center justify-between pb-3">
                 <h2 className="text-lg font-semibold">New task</h2>
                 <Button
@@ -402,8 +402,8 @@ export default function Home() {
         )}
 
         {pendingDelete && (
-          <div className="fixed inset-0 z-30 flex items-end justify-center bg-black/70 px-4 pb-10 sm:items-center">
-            <div className="w-full max-w-md rounded-2xl border border-border/70 bg-card p-4 shadow-xl">
+          <div className="fixed inset-0 z-30 flex items-end justify-center bg-black/70 px-4 pb-[calc(env(safe-area-inset-bottom,0px)+140px)] sm:items-center sm:pb-10">
+            <div className="w-full max-w-md max-h-[80vh] overflow-auto rounded-2xl border border-border/70 bg-card p-4 shadow-xl">
               <div className="flex flex-col gap-3">
                 <h2 className="text-lg font-semibold">Delete task?</h2>
                 <p className="text-sm text-muted-foreground">
