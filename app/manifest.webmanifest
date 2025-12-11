@@ -1,7 +1,7 @@
 {
   "name": "MyDay",
   "short_name": "MyDay",
-  "description": "Black and white local-first task manager with daily recurrence and offline support.",
+  "description": "Local-first task manager with daily recurrence and offline support.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#000000",

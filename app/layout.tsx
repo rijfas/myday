@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MyDay — black & white tasks",
+  title: "MyDay: My Daily tasks",
   description:
-    "A black and white local-first task manager with daily recurrence, offline support, and a completion chart.",
+    "A local-first task manager with daily recurrence, offline support, and a completion chart.",
   manifest: "/manifest.webmanifest",
   themeColor: "#000000",
   applicationName: "MyDay",
