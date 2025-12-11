@@ -126,7 +126,7 @@ export default function Home() {
       completedDates: [],
     };
 
-    setTasks((prev) => [newTask, ...prev]);
+    setTasks((prev) => [...prev, newTask]);
     setInput("");
     setRecurring(true);
     setShowAdd(false);
